@@ -47,23 +47,23 @@ export default function Home() {
                         Streamlined Reddit Reader
                     </h1>
                 </div>
-                <div className="z-10 sticky top-1 sm:top-0 sm:relative bg-gray-600 p-4 rounded-xl sm:rounded-r-none sm:rounded-l-xl shadow-2xl">
-                    <div className="sm:sticky top-2 flex sm:flex-col">
+                <div className="z-10 sticky top-1 sm:top-0 sm:relative">
+                    <div className="sm:sticky top-2 flex sm:flex-col bg-gray-600 p-4 rounded-xl shadow-2xl">
                         <Button
                             onClick={() => setState('view')}
                             className="mx-auto sm:mb-4 min-w-[100px]"
                         >
-                            Feed
+                            View Feed
                         </Button>
                         <Button
                             onClick={() => setState('manage')}
                             className="mx-auto min-w-[100px]"
                         >
-                            Manage
+                            Manage Feed
                         </Button>
                     </div>
                 </div>
-                <div className="relative bg-gray-800 text-white rounded-xl sm:rounded-l-none sm:rounded-r-xl p-4">
+                <div className="relative p-4 sm:px-8">
                     {state === 'view' && <Feed topics={topics} />}
                     {state === 'manage' && (
                         <Manager topics={topics} updateTopics={updateTopics} />

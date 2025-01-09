@@ -1,9 +1,11 @@
 'use client';
 
 import { ReactNode, useState } from 'react';
-import { LoadingWheel } from './general';
 import sanitizeHtml from 'sanitize-html';
 
+import { LoadingWheel } from '@/components/loading_wheel';
+
+import { ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -80,7 +82,7 @@ const buildPost = (post: RedditPost, index: number): ReactNode => {
     return (
         <Card
             key={index}
-            className="mt-4"
+            className="mt-4 bg-red-700 border-red-700"
             style={{
                 gridTemplateColumns: 'min-content 1fr',
                 gridTemplateRows: 'min-content min-content 1fr',
@@ -96,17 +98,17 @@ const buildPost = (post: RedditPost, index: number): ReactNode => {
                         {post.title}
                     </a>
                 </CardTitle>
-                <CardDescription className="whitespace-nowrap text-xs">
+                <CardDescription className="pl-2 text-gray-100 whitespace-nowrap text-xs">
                     <span className="font-semibold">By:</span> u/
-                    {`${post.author} `}
-                    <span className="font-semibold">Comments:</span>
-                    {` ${post.num_comments}`}
+                    {post.author}
+                    <span className="ml-3 font-semibold">Comments: </span>
+                    {post.num_comments}
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <Collapsible>
                     <CollapsibleTrigger className="mb-2">
-                        <Button>Toggle Content</Button>
+                        <Button variant="secondary">Toggle Content</Button>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                         {post.url && post.url !== linkToPost && (
@@ -122,7 +124,7 @@ const buildPost = (post: RedditPost, index: number): ReactNode => {
                         )}
                         {post.selftext_html && (
                             <div
-                                className="px-4"
+                                className="px-4 text-white"
                                 dangerouslySetInnerHTML={createMarkup(
                                     sanitizeHtml(parseHtml(post.selftext_html))
                                 )}
@@ -143,16 +145,17 @@ const displayFeed = (feed: FeedData): React.ReactNode => {
                 return (
                     <Collapsible
                         key={i}
-                        className="mt-4 py-2 px-4 bg-gray-400 rounded-xl"
+                        className="mt-4 p-4 bg-gray-800 rounded-xl"
                         defaultOpen={true}
                     >
-                        <CollapsibleTrigger className="w-full hover:italic">
-                            <h2 className="mb-2 text-left text-4xl text-black font-bold">
+                        <CollapsibleTrigger className="flex w-full hover:italic">
+                            <h2 className="text-left text-4xl text-white font-bold">
                                 r/{topic}
                             </h2>
+                            <ChevronsUpDown className="ml-auto mr-0 w-10 h-10 text-white" />
                         </CollapsibleTrigger>
                         <CollapsibleContent>
-                            <div>
+                            <div className="mt-2">
                                 {posts.map(({ data: post }, i) =>
                                     buildPost(post, i)
                                 )}

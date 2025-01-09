@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { LoadingWheel } from './general';
 import clsx from 'clsx';
 import { micromark } from 'micromark';
+
+import { LoadingWheel } from '@/components/loading_wheel';
 
 import { Button } from '@/components/ui/button';
 
@@ -67,7 +68,7 @@ export default function Manager({
                         <div
                             key={i}
                             className={clsx(
-                                'h-full grid auto-rows-min gap-y-2 gap-x-4 rounded-md bg-red-700 text-black leading-4 transition-all overflow-hidden duration-500',
+                                'h-full grid auto-rows-min gap-y-2 gap-x-4 rounded-md bg-red-700 text-white leading-4 transition-all overflow-hidden duration-500',
                                 {
                                     'max-h-screen p-2 mb-4 last:mb-0':
                                         !isIncluded,
@@ -89,15 +90,15 @@ export default function Manager({
                                 disabled={isIncluded}
                                 aria-disabled={isIncluded}
                                 variant="outline"
-                                className="flex w-fit h-auto px-3 py-1 bg-transparent text-sm rounded-xl border-black"
+                                className="group flex w-fit h-auto px-3 py-1 bg-transparent text-sm rounded-xl border-white"
                             >
                                 <div className="relative w-4 h-4 rounded-full my-auto">
-                                    <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 block bg-black w-2.5 h-[2px]"></span>
-                                    <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 rotate-90 block bg-black w-2.5 h-[2px]"></span>
+                                    <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 block bg-white group-hover:bg-black w-2.5 h-[2px]"></span>
+                                    <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 rotate-90 block bg-white group-hover:bg-black w-2.5 h-[2px]"></span>
                                 </div>
                                 add to feed
                             </Button>
-                            <div className="col-span-2 max-h-40 bg-slate-200 rounded-md p-1 overflow-hidden">
+                            <div className="col-span-2 max-h-40 border-slate-100 border-2 rounded-md p-1 overflow-hidden">
                                 <div
                                     className="max-h-full overflow-auto flex flex-col"
                                     dangerouslySetInnerHTML={{
@@ -129,8 +130,8 @@ export default function Manager({
     return (
         <>
             <h2 className="text-2xl mb-2">Feed Manager</h2>
-            <div className="border-2 rounded-md p-4">
-                <div className="text-xl border-b-2 border-dotted">
+            <div className="border-2 border-black rounded-md py-4 px-2">
+                <div className="text-xl border-b-2 border-black border-dotted">
                     Active Feeds
                 </div>
                 <div className="flex flex-wrap gap-2 mt-4">
@@ -138,22 +139,22 @@ export default function Manager({
                         <div
                             key={i}
                             onClick={() => removeTopic(t)}
-                            className="relative flex py-1 pl-2 pr-6 group w-fit max-w-96 bg-gray-200 hover:bg-gray-400 text-center hover:text-left cursor-pointer rounded-3xl text-black leading-4 transition-all duration-500"
+                            className="relative flex py-1 pl-2 pr-6 group w-fit max-w-96 bg-gray-600 hover:bg-red-800 text-center hover:text-left cursor-pointer rounded-3xl text-white leading-4 transition-all duration-500"
                         >
                             <span className="relative left-2 group-hover:left-0 transition-all duration-500">
                                 {t}
                             </span>
-                            <div className="absolute right-1 ml-2 w-4 h-4 bg-red-700 opacity-0 group-hover:opacity-100 rounded-full transition-all duration-500">
-                                <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 rotate-45 block bg-white w-2.5 h-[2px]"></span>
-                                <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 -rotate-45 block bg-white w-2.5 h-[2px]"></span>
+                            <div className="absolute right-1 ml-2 w-4 h-4 bg-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+                                <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 rotate-45 block bg-white w-3 h-[2px]"></span>
+                                <span className="absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 -rotate-45 block bg-white w-3 h-[2px]"></span>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-            <div className="mt-3 rounded-md p-4">
+            <div className="mt-8">
                 <form
-                    className="flex w-fit mx-auto sm:mx-0 mb-4"
+                    className="flex w-fit mx-auto mb-4"
                     onSubmit={(e) => {
                         e.preventDefault();
                         makeRequest();
