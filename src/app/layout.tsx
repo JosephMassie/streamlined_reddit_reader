@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
-import Link from 'next/link';
-
 const inter = Inter({
     subsets: ['latin'],
     weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -11,7 +9,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
     title: 'SRR',
-    description: 'A simple Reddit reader',
+    description: 'A streamlined Reddit reader',
 };
 
 export default function RootLayout({
