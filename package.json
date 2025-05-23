@@ -13,6 +13,8 @@
         "@radix-ui/react-slot": "^1.1.1",
         "@sentry/nextjs": "^9.13.0",
         "@sentry/webpack-plugin": "^3.3.1",
+        "@tanstack/react-query": "^5.76.2",
+        "@tanstack/react-query-devtools": "^5.76.2",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "lucide-react": "^0.469.0",
@@ -25,6 +27,7 @@
         "tailwindcss-animate": "^1.0.7"
     },
     "devDependencies": {
+        "@tanstack/eslint-plugin-query": "^5.74.7",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",

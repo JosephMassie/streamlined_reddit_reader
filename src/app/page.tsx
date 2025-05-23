@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 type AppState = 'view' | 'manage';
 
 export default function Home() {
-    const [state, setState] = useState('manage' as AppState);
+    const [state, setState] = useState('view' as AppState);
     const [topics, setTopics] = useState(['news']);
 
     const packTopics = (t: string[]) => t.sort().join(',');
@@ -51,13 +51,13 @@ export default function Home() {
                     <div className="sm:sticky top-2 flex sm:flex-col bg-gray-600 p-4 rounded-xl shadow-2xl">
                         <Button
                             onClick={() => setState('view')}
-                            className="mx-auto sm:mb-4 min-w-[100px]"
+                            className="mx-auto sm:mb-4 min-w-[140px]"
                         >
                             View Feed
                         </Button>
                         <Button
                             onClick={() => setState('manage')}
-                            className="mx-auto min-w-[100px]"
+                            className="mx-auto min-w-[140px]"
                         >
                             Manage Feed
                         </Button>
