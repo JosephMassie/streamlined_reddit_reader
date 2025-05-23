@@ -23,7 +23,7 @@ export default function Home() {
         if (savedTopics && savedTopics !== packTopics(topics)) {
             setTopics(unpackTopics(savedTopics));
         }
-    });
+    }, []);
 
     const updateTopics = (t: string[]) => {
         if (storage) storage.setItem(storageKey, packTopics(t));

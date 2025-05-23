@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 
 import { LoadingWheel } from '@/components/loading_wheel';
 import { getSubreddits } from '@/apis/reddit';
+import ErrorMsg from '@/components/errorMsg';
 
 type SubredditListProps = HTMLProps<HTMLDivElement> & {
     search: string;
@@ -35,9 +36,7 @@ const SubredditList: React.FC<SubredditListProps> = ({
 
     if (isError) {
         return (
-            <div className="text-3xl">
-                Error loading subreddits "{error.toString()}"
-            </div>
+            <ErrorMsg msg={`Error loading subreddits "${error.toString()}"`} />
         );
     }
 

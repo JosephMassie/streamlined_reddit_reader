@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import { loadFeed } from '@/apis/reddit';
 
 import Post from './post';
+import ErrorMsg from '@/components/errorMsg';
 
 export default function Feed({ topics = ['news'] }: { topics?: string[] }) {
     const { isPending, isError, data, error } = useQuery({
@@ -25,9 +26,9 @@ export default function Feed({ topics = ['news'] }: { topics?: string[] }) {
 
     if (isError) {
         return (
-            <div className="text-3xl">
-                Error Occured requesting feed "{error.toString()}"
-            </div>
+            <ErrorMsg
+                msg={`Error Occured requesting feed "${error.toString()}"`}
+            />
         );
     }
 
