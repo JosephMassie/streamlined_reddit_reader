@@ -1,34 +1,46 @@
 import {
-    SubRedditData,
-    RawSubRedditData,
+    RedditListingOptions,
+    SubRedditsResponse,
     FeedData,
     RedditPostData,
-    RawRedditPostData,
+    RedditPostResponse,
 } from '@/reddit';
 
 export const REDDIT_URL = 'https://www.reddit.com';
 
+const buildParams = (params: Record<string, string | null>) =>
+    Object.keys(params)
+        .filter((key) => params[key] !== null)
+        .map((key) => `${key}=${params[key]}`)
+        .join('&');
+
 export const getSubreddits = async (
-    search: string
-): Promise<SubRedditData[]> => {
+    search: string,
+    options: RedditListingOptions = {}
+) => {
     let url = `${REDDIT_URL}/subreddits`;
 
+    const { before, after, count } = options;
+
+    if ((before || after) && !count) {
+        console.warn(
+            `invalid request options must include count if using before or after`
+        );
+    }
+
+    const params = buildParams(options);
+
     if (search !== '') {
-        url = `${url}/search.json?q=${search}`;
+        url = `${url}/search.json?q=${search}&${params}`;
     } else {
-        url = `${url}.json`;
+        url = `${url}.json?${params}`;
     }
 
     const response = (await fetch(url).then((r) =>
         r.json()
-    )) as RawSubRedditData;
+    )) as SubRedditsResponse;
 
-    const subReddits = response.data.children.map((sub) => {
-        const { display_name, description, type } = sub.data;
-        return { display_name, description, type } as SubRedditData;
-    });
-
-    return subReddits;
+    return response.data;
 };
 
 export async function loadFeed(feeds: string[]): Promise<FeedData> {
@@ -38,11 +50,11 @@ export async function loadFeed(feeds: string[]): Promise<FeedData> {
 
     let results: Record<string, RedditPostData> = {};
 
-    for (let f of feeds) {
+    for (let subreddit of feeds) {
         const response = (await fetch(
-            `${REDDIT_URL}/r/${f}.json`
-        )) as RawRedditPostData;
-        results[f] = (await response.json()).data;
+            `${REDDIT_URL}/r/${subreddit}.json`
+        )) as RedditPostResponse;
+        results[subreddit] = (await response.json()).data;
     }
 
     return results;

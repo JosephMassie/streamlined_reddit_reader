@@ -1,6 +1,14 @@
-export interface RawSubRedditData extends Response {
+export type RedditListingOptions = {
+    before?: string | null;
+    after?: string | null;
+    count?: string;
+};
+
+export interface SubRedditsResponse extends Response {
     data: {
         children: Array<{ data: SubRedditData }>;
+        before: string | null;
+        after: string | null;
     };
 }
 
@@ -10,7 +18,7 @@ export type SubRedditData = {
     type: string;
 };
 
-interface RawRedditPostData extends Response {
+interface RedditPostResponse extends Response {
     data: Record<string, string>;
 }
 

@@ -5,6 +5,14 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import SubredditList from './subredditList';
+import { RedditListingOptions } from '@/reddit';
+
+const entriesPerPage = 25;
+
+type QueryState = {
+    page: number;
+    listOpts: RedditListingOptions;
+};
 
 export default function Manager({
     topics,
@@ -14,6 +22,10 @@ export default function Manager({
     updateTopics: (topics: string[]) => void;
 }) {
     const [search, setSearch] = useState('');
+    const [queryState, setQueryState] = useState<QueryState>({
+        page: 1,
+        listOpts: {},
+    });
 
     const removeTopic = (topic: string) => {
         updateTopics(topics.filter((t) => t != topic));
@@ -44,27 +56,61 @@ export default function Manager({
                     ))}
                 </div>
             </div>
-            <div className="mt-8">
+            <div className="mt-4">
                 <form
-                    className="flex w-fit mx-auto mb-4"
-                    onSubmit={(event) => {
-                        event.preventDefault();
-                        const data = new FormData(event.currentTarget);
+                        className="flex w-fit mx-auto mb-4"
+                        onSubmit={(event) => {
+                            event.preventDefault();
+                            const data = new FormData(event.currentTarget);
 
-                        setSearch(data.get('search')?.toString() ?? '');
-                    }}
-                >
-                    <input
-                        name="search"
-                        placeholder="search..."
-                        className="px-2 rounded-l-xl text-black bg-slate-100"
-                    ></input>
-                    <Button className="rounded-l-none">Search</Button>
-                </form>
+                            setSearch(data.get('search')?.toString() ?? '');
+                        }}
+                    >
+                        <input
+                            name="search"
+                            placeholder="search..."
+                            className="px-2 rounded-l-xl text-black bg-slate-100"
+                        ></input>
+                        <Button className="rounded-l-none">Search</Button>
+                    </form>
                 <SubredditList
                     search={search}
                     userTopics={topics}
+                    listingOptions={queryState.listOpts}
                     addTopic={(topic) => updateTopics(topics.concat(topic))}
+                    updateOptions={(options) => {
+                        console.log(`received new listing options`, options);
+
+                        setQueryState((old) => {
+                            const updated = { ...old };
+                            let entries = 0;
+
+                            if (options.after) {
+                                updated.page++;
+                                entries = updated.page * entriesPerPage;
+                            } else if (options.before) {
+                                updated.page--;
+                                entries = updated.page * entriesPerPage + 1;
+                            } else {
+                                console.error(
+                                    `malformed listing options`,
+                                    options
+                                );
+                            }
+
+                            console.log(
+                                `updating query state for page ${updated.page}`,
+                                updated
+                            );
+
+                            updated.listOpts = {
+                                ...updated.listOpts,
+                                ...options,
+                                count: entries.toString(),
+                            };
+                            return updated;
+                        });
+                    }}
                 ></SubredditList>
             </div>
         </>
