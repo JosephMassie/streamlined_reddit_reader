@@ -1,4 +1,4 @@
-import { HTMLProps } from 'react';
+import { HTMLProps, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { micromark } from 'micromark';
@@ -15,22 +15,61 @@ import { createMarkup } from '@/lib/utils';
 type SubredditListProps = HTMLProps<HTMLDivElement> & {
     search: string;
     userTopics: string[];
-    listingOptions?: RedditListingOptions;
     addTopic: (topic: string) => void;
-    updateOptions: (options: RedditListingOptions) => void;
 };
+
+type QueryState = {
+    page: number;
+    listOpts: RedditListingOptions;
+};
+
+const entriesPerPage = 25;
 
 const SubredditList: React.FC<SubredditListProps> = ({
     search,
     userTopics,
-    listingOptions,
     addTopic,
-    updateOptions,
 }) => {
-    const { isLoading, isError, error, data } = useQuery({
-        queryKey: ['topics', search, JSON.stringify(listingOptions)],
-        queryFn: () => getSubreddits(search, listingOptions),
+    const [queryState, setQueryState] = useState<QueryState>({
+        page: 1,
+        listOpts: {},
     });
+
+    const { isLoading, isError, error, data } = useQuery({
+        queryKey: ['topics', search, JSON.stringify(queryState.listOpts)],
+        queryFn: () => getSubreddits(search, queryState.listOpts),
+    });
+
+    const updateOptions = (options: RedditListingOptions) => {
+        console.log(`received new listing options`, options);
+
+        setQueryState((old) => {
+            const updated = { ...old };
+            let entries = 0;
+
+            if (options.after) {
+                updated.page++;
+                entries = updated.page * entriesPerPage;
+            } else if (options.before) {
+                updated.page--;
+                entries = updated.page * entriesPerPage + 1;
+            } else {
+                console.error(`malformed listing options`, options);
+            }
+
+            console.log(
+                `updating query state for page ${updated.page}`,
+                updated
+            );
+
+            updated.listOpts = {
+                ...updated.listOpts,
+                ...options,
+                count: entries.toString(),
+            };
+            return updated;
+        });
+    };
 
     if (isLoading) {
         return <LoadingWheel />;

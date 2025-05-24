@@ -5,14 +5,6 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 import SubredditList from './subredditList';
-import { RedditListingOptions } from '@/reddit';
-
-const entriesPerPage = 25;
-
-type QueryState = {
-    page: number;
-    listOpts: RedditListingOptions;
-};
 
 export default function Manager({
     topics,
@@ -22,10 +14,6 @@ export default function Manager({
     updateTopics: (topics: string[]) => void;
 }) {
     const [search, setSearch] = useState('');
-    const [queryState, setQueryState] = useState<QueryState>({
-        page: 1,
-        listOpts: {},
-    });
 
     const removeTopic = (topic: string) => {
         updateTopics(topics.filter((t) => t != topic));
@@ -76,41 +64,7 @@ export default function Manager({
                 <SubredditList
                     search={search}
                     userTopics={topics}
-                    listingOptions={queryState.listOpts}
                     addTopic={(topic) => updateTopics(topics.concat(topic))}
-                    updateOptions={(options) => {
-                        console.log(`received new listing options`, options);
-
-                        setQueryState((old) => {
-                            const updated = { ...old };
-                            let entries = 0;
-
-                            if (options.after) {
-                                updated.page++;
-                                entries = updated.page * entriesPerPage;
-                            } else if (options.before) {
-                                updated.page--;
-                                entries = updated.page * entriesPerPage + 1;
-                            } else {
-                                console.error(
-                                    `malformed listing options`,
-                                    options
-                                );
-                            }
-
-                            console.log(
-                                `updating query state for page ${updated.page}`,
-                                updated
-                            );
-
-                            updated.listOpts = {
-                                ...updated.listOpts,
-                                ...options,
-                                count: entries.toString(),
-                            };
-                            return updated;
-                        });
-                    }}
                 ></SubredditList>
             </div>
         </>

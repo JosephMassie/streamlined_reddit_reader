@@ -33,6 +33,8 @@ export type RedditPost = {
 
 export type RedditPostData = {
     children: Array<{ data: RedditPost }>;
+    before: string | null;
+    after: string | null;
 };
 
 export type FeedData = Record<string, RedditPostData>;

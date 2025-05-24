@@ -43,19 +43,23 @@ export const getSubreddits = async (
     return response.data;
 };
 
-export async function loadFeed(feeds: string[]): Promise<FeedData> {
-    if (feeds.length === 0) {
-        throw new TypeError('no feeds available to load');
+export async function getPots(
+    subreddit: string,
+    options: RedditListingOptions = {}
+): Promise<RedditPostData> {
+    const { before, after, count } = options;
+
+    if ((before || after) && !count) {
+        console.warn(
+            `invalid request options must include count if using before or after`
+        );
     }
 
-    let results: Record<string, RedditPostData> = {};
+    const params = buildParams(options);
 
-    for (let subreddit of feeds) {
-        const response = (await fetch(
-            `${REDDIT_URL}/r/${subreddit}.json`
-        )) as RedditPostResponse;
-        results[subreddit] = (await response.json()).data;
-    }
+    const response = (await fetch(
+        `${REDDIT_URL}/r/${subreddit}.json?${params}`
+    )) as RedditPostResponse;
 
-    return results;
+    return (await response.json()).data;
 }
