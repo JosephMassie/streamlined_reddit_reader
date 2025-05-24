@@ -22,7 +22,6 @@ export const getSubreddits = async (
     const response = (await fetch(url).then((r) =>
         r.json()
     )) as RawSubRedditData;
-    console.log(response);
 
     const subReddits = response.data.children.map((sub) => {
         const { display_name, description, type } = sub.data;

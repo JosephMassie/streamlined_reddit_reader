@@ -25,7 +25,6 @@ function parseHtml(a_html: string) {
         .replace(/&amp;/g, '&')
         .replace(/&#34;/g, '"')
         .replace(/&#39;/g, "'");
-    console.log('parsed', html);
 
     return html;
 }
