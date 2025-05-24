@@ -2,12 +2,14 @@ import { HTMLProps } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { micromark } from 'micromark';
+import sanitizeHtml from 'sanitize-html';
 
 import { Button } from '@/components/ui/button';
 
 import { LoadingWheel } from '@/components/loading_wheel';
 import { getSubreddits } from '@/apis/reddit';
 import ErrorMsg from '@/components/errorMsg';
+import { createMarkup } from '@/lib/utils';
 
 type SubredditListProps = HTMLProps<HTMLDivElement> & {
     search: string;
@@ -81,9 +83,9 @@ const SubredditList: React.FC<SubredditListProps> = ({
                             <div className="col-span-2 max-h-40 border-slate-100 border-2 rounded-md p-1 overflow-hidden">
                                 <div
                                     className="max-h-full overflow-auto flex flex-col"
-                                    dangerouslySetInnerHTML={{
-                                        __html: micromark(description),
-                                    }}
+                                    dangerouslySetInnerHTML={createMarkup(
+                                        sanitizeHtml(micromark(description))
+                                    )}
                                 ></div>
                             </div>
                         </div>

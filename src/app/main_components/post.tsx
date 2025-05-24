@@ -16,22 +16,7 @@ import {
 
 import { RedditPost } from '@/reddit';
 import { REDDIT_URL } from '@/apis/reddit';
-
-function parseHtml(a_html: string) {
-    if (typeof a_html !== 'string') return '';
-    const html = a_html
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&amp;/g, '&')
-        .replace(/&#34;/g, '"')
-        .replace(/&#39;/g, "'");
-
-    return html;
-}
-
-const createMarkup = (unsafeHtml: string) => ({
-    __html: unsafeHtml,
-});
+import { createMarkup, parseHtml } from '@/lib/utils';
 
 const Post = ({ data }: { data: RedditPost }): ReactNode => {
     const { permalink, title, author, num_comments, url, selftext_html } = data;
