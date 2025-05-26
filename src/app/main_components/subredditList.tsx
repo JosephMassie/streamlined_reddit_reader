@@ -121,9 +121,9 @@ const SubredditList: React.FC<SubredditListProps> = ({
                             <div
                                 key={`${display_name}_${i}`}
                                 className={clsx(
-                                    'h-full grid auto-rows-min gap-y-2 gap-x-4 rounded-md bg-red-700 text-white leading-4 transition-all overflow-hidden duration-500',
+                                    'h-full grid auto-rows-min gap-y-2 gap-x-4 rounded-md bg-red-800 text-white leading-4 transition-all overflow-hidden duration-500',
                                     {
-                                        'max-h-screen p-2 mb-4 last:mb-0':
+                                        'max-h-screen p-4 mb-6 last:mb-0':
                                             !isIncluded,
                                         'max-h-0 mb-0 p-0 opacity-0':
                                             isIncluded,

@@ -36,9 +36,9 @@ export default function Home() {
             className="h-screen overflow-y-auto bg-gray-400 m-0 text-black px-1 sm:px-[15px]"
         >
             <div
-                className="relative sm:container min-h-[500px] my-4 mx-auto flex flex-col sm:grid gap-y-2 sm:gap-y-[20px]"
+                className="container relative min-h-[500px] my-4 mx-auto flex flex-col sm:grid sm:gap-x-4 gap-y-2 sm:gap-y-4"
                 style={{
-                    gridTemplateColumns: '20% 80%',
+                    gridTemplateColumns: 'min-content 1fr',
                     gridTemplateRows: 'min-content',
                 }}
             >
@@ -47,23 +47,23 @@ export default function Home() {
                         Streamlined Reddit Reader
                     </h1>
                 </div>
-                <div className="z-10 sticky top-1 sm:top-0 sm:relative">
-                    <div className="sm:sticky top-2 flex sm:flex-col bg-gray-600 p-4 rounded-xl shadow-2xl">
+                <div className="z-20 sticky top-1 sm:top-0 sm:relative w-fit mx-auto">
+                    <div className="sm:sticky top-2 flex sm:flex-col gap-4 w-fit bg-gray-600 p-4 rounded-xl shadow-2xl">
                         <Button
                             onClick={() => setState('view')}
-                            className="mx-auto sm:mb-4 min-w-[140px]"
+                            className="mx-auto md:min-w-[140px] max-md:px-2"
                         >
                             View Feed
                         </Button>
                         <Button
                             onClick={() => setState('manage')}
-                            className="mx-auto min-w-[140px]"
+                            className="mx-auto md:min-w-[140px] max-md:px-2"
                         >
                             Manage Feed
                         </Button>
                     </div>
                 </div>
-                <div className="relative p-4 sm:px-8">
+                <div className="relative">
                     {state === 'view' && <Feed topics={topics} />}
                     {state === 'manage' && (
                         <Manager topics={topics} updateTopics={updateTopics} />

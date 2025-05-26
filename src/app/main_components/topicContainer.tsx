@@ -23,7 +23,7 @@ const MainContainer: React.FC<MainContainerProps> = ({
 }) => {
     return (
         <Collapsible
-            className="mt-4 p-4 bg-gray-800 rounded-xl"
+            className="relative p-4 bg-gray-800 rounded-xl"
             defaultOpen={true}
         >
             <CollapsibleTrigger className="flex w-full hover:italic">
@@ -108,7 +108,7 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ subreddit }) => {
 
     return (
         <MainContainer subreddit={subreddit}>
-            <div className="sticky top-0 bg-gray-800 p-2 z-10 flex justify-end gap-2">
+            <div className="md:sticky top-0 bg-gray-800 p-2 z-10 flex justify-end gap-2">
                 {data?.before && (
                     <Button
                         onClick={() => {
@@ -134,7 +134,7 @@ const TopicContainer: React.FC<TopicContainerProps> = ({ subreddit }) => {
                     </Button>
                 )}
             </div>
-            <div className="mt-2">
+            <div className="mt-2 flex flex-col gap-6">
                 {data?.children.map(({ data: postData }, i) => (
                     <Post key={i} data={postData} />
                 ))}

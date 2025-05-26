@@ -8,11 +8,6 @@ import {
     CardDescription,
     CardContent,
 } from '@/components/ui/card';
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 
 import { RedditPost } from '@/reddit';
 import { REDDIT_URL } from '@/apis/reddit';
@@ -25,7 +20,7 @@ const Post = ({ data }: { data: RedditPost }): ReactNode => {
     return (
         <Card
             key={title}
-            className="mt-4 bg-red-700 border-red-700"
+            className="bg-red-800 border-none"
             style={{
                 gridTemplateColumns: 'min-content 1fr',
                 gridTemplateRows: 'min-content min-content 1fr',
@@ -36,47 +31,32 @@ const Post = ({ data }: { data: RedditPost }): ReactNode => {
                     <a
                         href={linkToPost}
                         target="_about"
-                        className="font-bold text-xl col-span-2 leading-4"
+                        className="font-bold text-2xl col-span-2 leading-4 text-gray-100"
                     >
                         {title}
                     </a>
                 </CardTitle>
-                <CardDescription className="pl-2 text-gray-100 whitespace-nowrap text-xs">
+                <CardDescription className="pl-2 text-gray-300 whitespace-nowrap text-xs">
                     <span className="font-semibold">By:</span> u/
                     {author}
                     <span className="ml-3 font-semibold">Comments: </span>
                     {num_comments}
                 </CardDescription>
             </CardHeader>
-            <CardContent>
-                <Collapsible>
-                    <CollapsibleTrigger className="mb-2">
-                        <div className="rounded-md bg-white py-2 px-4">
-                            Toggle Content
-                        </div>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                        {url && url !== linkToPost && (
-                            <div className="whitespace-nowrap overflow-hidden">
-                                <a
-                                    href={url}
-                                    target="_about"
-                                    className="block max-w-full overflow-hidden overflow-ellipsis"
-                                >
-                                    {url}
-                                </a>
-                            </div>
+            <CardContent className="break-all">
+                {url && url !== linkToPost && (
+                    <a href={url} target="_about" className="text-gray-200">
+                        {url}
+                    </a>
+                )}
+                {selftext_html && (
+                    <div
+                        className="px-4 text-gray-200 overflow-hidden text-ellipsis line-clamp-6 [&_ul]:list-disc [&_li]:ml-4"
+                        dangerouslySetInnerHTML={createMarkup(
+                            sanitizeHtml(parseHtml(selftext_html))
                         )}
-                        {selftext_html && (
-                            <div
-                                className="px-4 text-white"
-                                dangerouslySetInnerHTML={createMarkup(
-                                    sanitizeHtml(parseHtml(selftext_html))
-                                )}
-                            ></div>
-                        )}
-                    </CollapsibleContent>
-                </Collapsible>
+                    ></div>
+                )}
             </CardContent>
         </Card>
     );
