@@ -1,7 +1,6 @@
 import {
     RedditListingOptions,
     SubRedditsResponse,
-    FeedData,
     RedditPostData,
     RedditPostResponse,
 } from '@/reddit';
